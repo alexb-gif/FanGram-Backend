@@ -2,6 +2,18 @@ const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../utils/generateToken");
 
+
+module.exports.checkIfUserExists = async(authId) => {
+  try {
+    const existingUser = await User.findOne({ authId });
+    return existingUser;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+
 module.exports.register = async (req, res, next) => {
   try {
     const { username, email, password, authId, inviteCode, type } = req.body;

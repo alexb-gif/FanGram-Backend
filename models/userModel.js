@@ -24,10 +24,7 @@ const userSchema = new mongoose.Schema({
   },
 
   // gmail, google, facebook, apple
-  type: {
-    type: String,
-    required: [true, "Please Enter Your Email"],
-  },
+ 
 });
 
 module.exports = mongoose.model("user", userSchema);
