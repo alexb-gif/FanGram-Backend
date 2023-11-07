@@ -5,15 +5,16 @@ const cors = require("cors");
 const session = require('express-session');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 const userController = require("./controllers/userController")
 const UserModal = require("./models/userModel")
 
 require("dotenv").config();
 
-// app.use(cors());
+
 app.use(cors({
   origin: '*', 
-  // credentials: true, 
+  
 }));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,6 +23,20 @@ app.use(session({ secret: 'ajafja90-20e=1enad', resave: true, saveUninitialized:
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Passport serialization and deserialization
+passport.serializeUser((user, done) => done(null, user.id));
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await UserModal.findById(id);
+    
+    done(null, user);
+  } catch (error) {
+    done(error, null);
+  }
+});
+
+
 
 const userRoute = require("./routes/userRoutes");
 const { default: mongoose } = require("mongoose");
@@ -58,18 +73,55 @@ passport.use(
   )
 );
 
-// Passport serialization and deserialization
-passport.serializeUser((user, done) => done(null, user.id));
-passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await UserModal.findById(id);
-    console.log(user)
-    console.log("user")
-    done(null, user);
-  } catch (error) {
-    done(error, null);
-  }
-});
+
+// Configure Passport.js Facebook Strategy
+passport.use( 
+  new FacebookStrategy(
+    {
+      clientID: process.env.FACEBOOK_CLIENT_ID,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+      callbackURL: '/auth/facebook/callback',
+       state: true
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      console.log(accessToken, refreshToken)
+      const issuer = profile.id;
+      console.log("profile")
+      console.log(profile)
+      const existingUser = await userController.checkIfUserExists(issuer);
+      // console.log("existingUser")
+      // console.log(existingUser)
+
+      if (existingUser) {
+        done(null, existingUser);
+      } else {
+        const newUser = new UserModal({
+          username: profile.displayName,
+          // email: profile.emails[0].value,
+          email: "abc@gmail.com",
+          authId: issuer,
+          
+        });
+
+        const savedUser = await newUser.save();
+        done(null, savedUser);
+      }
+    }
+  )
+);
+
+
+// passport.use(new FacebookStrategy({
+//     clientID: process.env.FACEBOOK_CLIENT_ID,
+//       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+//       callbackURL: '/auth/facebook/callback',
+//       //  state: true
+//   }, function (accessToken, refreshToken, profile, done) {
+//     return done(null, profile);
+//   }
+// ));
+
+
 
 
 
