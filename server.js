@@ -81,16 +81,17 @@ passport.use(
       clientID: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
       callbackURL: '/auth/facebook/callback',
+      profileFields: ["id", "displayName", "email"],
+      enableProof: true,
        state: true
     },
     async (accessToken, refreshToken, profile, done) => {
-      console.log(accessToken, refreshToken)
       const issuer = profile.id;
       console.log("profile")
       console.log(profile)
       const existingUser = await userController.checkIfUserExists(issuer);
-      // console.log("existingUser")
-      // console.log(existingUser)
+      console.log("existingUser")
+      console.log(existingUser)
 
       if (existingUser) {
         done(null, existingUser);
@@ -111,15 +112,6 @@ passport.use(
 );
 
 
-// passport.use(new FacebookStrategy({
-//     clientID: process.env.FACEBOOK_CLIENT_ID,
-//       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-//       callbackURL: '/auth/facebook/callback',
-//       //  state: true
-//   }, function (accessToken, refreshToken, profile, done) {
-//     return done(null, profile);
-//   }
-// ));
 
 
 
