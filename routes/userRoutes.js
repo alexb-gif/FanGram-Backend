@@ -2,9 +2,7 @@ const passport = require("passport");
 const {
   register,
   login,
-  // getAllUsers,
-  // getMyProfile,
-  // editMyProfile
+  
 } = require("../controllers/userController");
 const apiUrl = require("../utils/baseUrl")
 
@@ -21,24 +19,6 @@ router.get('/auth/google/callback', passport.authenticate('google', { failureRed
   }
 );
 
-// Facebook Auth Routes
-
-// router.get('/login/federated/facebook', passport.authenticate('facebook', { scope: ['profile', "email"] } ));
-// router.get('/login/federated/facebook', passport.authenticate('facebook'))
-router.get('/auth/facebook', passport.authenticate('facebook'));
-router.get('/auth/facebook/callback',  passport.authenticate('facebook', { failureRedirect: '/' }),
-  (req, res) => {
-  res.redirect(apiUrl);
-  });
-
-
-// router.get('/auth/facebook', passport.authenticate('facebook'));
-
-// router.get('/auth/facebook/callback',
-//   passport.authenticate('facebook', {
-//     successRedirect: '/',
-//     failureRedirect: '/'
-//   }));
 
 
 

@@ -74,42 +74,6 @@ passport.use(
 );
 
 
-// Configure Passport.js Facebook Strategy
-passport.use( 
-  new FacebookStrategy(
-    {
-      clientID: process.env.FACEBOOK_CLIENT_ID,
-      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-      callbackURL: '/auth/facebook/callback',
-      profileFields: ["id", "displayName", "email"],
-      enableProof: true,
-       state: true
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      const issuer = profile.id;
-      console.log("profile")
-      console.log(profile)
-      const existingUser = await userController.checkIfUserExists(issuer);
-      console.log("existingUser")
-      console.log(existingUser)
-
-      if (existingUser) {
-        done(null, existingUser);
-      } else {
-        const newUser = new UserModal({
-          username: profile.displayName,
-          // email: profile.emails[0].value,
-          email: "abc@gmail.com",
-          authId: issuer,
-          
-        });
-
-        const savedUser = await newUser.save();
-        done(null, savedUser);
-      }
-    }
-  )
-);
 
 
 
