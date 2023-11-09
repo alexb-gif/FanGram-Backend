@@ -62,18 +62,19 @@ module.exports.login = async (req, res, next) => {
     }
 
     if (password) {
-      isPasswordValid = await bcrypt.compare(password, user.password);
+      isPasswordValid =  bcrypt.compare(password, user.password);
     }
 
     if (password && !isPasswordValid) {
       return res.json({
-        message: "Incorrect email or password",
+        message: "Incorrect password",
         status: false,
       });
     }
 
     return res.json({
       status: true,
+      message: "Login Successfull",
       userId: user._id,
       token: `Bearer ${generateToken(user._id.toString())}`,
     });
