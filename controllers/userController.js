@@ -2,24 +2,21 @@ const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("../utils/generateToken");
 
-
-module.exports.checkIfUserExists = async(authId) => {
+module.exports.checkIfUserExists = async (authId) => {
   try {
     const existingUser = await User.findOne({ authId });
     return existingUser;
   } catch (error) {
     throw error;
   }
-}
-
-
+};
 
 module.exports.register = async (req, res, next) => {
   try {
-    const { username, email, password, authId, inviteCode, type } = req.body;
+    const { username, email, password, authId, inviteCode } = req.body;
     let hashedPassword;
 
-    if (!username || !email || !type) {
+    if (!username || !email) {
       return res.json({ status: false, message: "Incomplete Details!" });
     }
 
@@ -38,7 +35,6 @@ module.exports.register = async (req, res, next) => {
       password: password ? hashedPassword : "",
       authId: authId ? authId : "",
       inviteCode: inviteCode ? inviteCode : "",
-      type: type,
     });
 
     return res.json({ status: true, message: "Registeration Successfull!" });
@@ -62,7 +58,7 @@ module.exports.login = async (req, res, next) => {
     }
 
     if (password) {
-      isPasswordValid =  bcrypt.compare(password, user.password);
+      isPasswordValid = bcrypt.compare(password, user.password);
     }
 
     if (password && !isPasswordValid) {

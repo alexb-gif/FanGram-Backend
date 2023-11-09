@@ -23,8 +23,15 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
 
-  // gmail, google, facebook, apple
- 
+  gender: {
+    type: String,
+  },
+  dob: {
+    type: String,
+  },
+  phoneNumber: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("user", userSchema);
