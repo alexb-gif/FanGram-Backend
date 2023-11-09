@@ -23,7 +23,7 @@ router.get('/auth/google/callback', passport.authenticate('google', { failureRed
 
 
 
-router.post("/register", register);
-router.post("/login", login);
+router.post("/api/user/register", register);
+router.post("/api/user/login", login);
 
 module.exports = router;
