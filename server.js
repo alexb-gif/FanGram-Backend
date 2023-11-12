@@ -37,8 +37,13 @@ passport.deserializeUser(async (id, done) => {
 });
 
 
-
+// Routes Imports
 const userRoute = require("./routes/userRoutes");
+const videoRoute = require("./routes/videoRoutes");
+const orderRoute = require("./routes/orderRoutes");
+const couponRoute = require("./routes/couponRoutes");
+const celebrityRoute = require("./routes/celebrityRoutes");
+const businessPromotionRoute = require("./routes/businessPromotionRoutes");
 const { default: mongoose } = require("mongoose");
 
 
@@ -83,6 +88,11 @@ passport.use(
 
 // Routes
 app.use("/", userRoute);
+app.use("/", videoRoute);
+app.use("/", orderRoute);
+app.use("/", couponRoute);
+app.use("/", celebrityRoute);
+app.use("/", businessPromotionRoute);
 
 
 //database connection

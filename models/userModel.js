@@ -32,6 +32,20 @@ const userSchema = new mongoose.Schema({
   phoneNumber: {
     type: String,
   },
+  tcashEarned: Number,
+
+   coupons: [{
+     type: mongoose.Schema.Types.ObjectId,
+     ref: 'coupon'
+   }],
+   favorites: [{
+     type: mongoose.Schema.Types.ObjectId,
+     ref: 'celebrities'
+   }],
+   bookings: [{
+     type: mongoose.Schema.Types.ObjectId,
+     ref: 'orders'
+   }]
 });
 
 module.exports = mongoose.model("user", userSchema);
