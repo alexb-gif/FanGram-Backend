@@ -13,7 +13,7 @@ module.exports.checkIfUserExists = async (authId) => {
 
 module.exports.register = async (req, res, next) => {
   try {
-    const { username, email, password, authId, inviteCode } = req.body;
+    const { username, email, password, inviteCode } = req.body;
     let hashedPassword;
 
     if (!username || !email) {
@@ -22,7 +22,7 @@ module.exports.register = async (req, res, next) => {
 
     const emailCheck = await User.findOne({ email });
     if (emailCheck) {
-      return res.json({ status: false, message: "Email already in used" });
+      return res.json({ status: false, message: "Email already in use" });
     }
 
     if (password) {
@@ -33,11 +33,10 @@ module.exports.register = async (req, res, next) => {
       email,
       username,
       password: password ? hashedPassword : "",
-      authId: authId ? authId : "",
       inviteCode: inviteCode ? inviteCode : "",
     });
 
-    return res.json({ status: true, message: "Registeration Successfull!" });
+    return res.json({ status: true, message: "Registeration Successfull" });
   } catch (ex) {
     return res.json({ status: false, message: ex.message });
   }
@@ -53,7 +52,7 @@ module.exports.login = async (req, res, next) => {
     if (!user) {
       return res.json({
         status: false,
-        message: "Incorrect credentials!",
+        message: "User with this email doesn't exist ",
       });
     }
 
