@@ -34,3 +34,12 @@ module.exports.addNewCelebrity = async (req, res, next) => {
     return res.status(500).json({ status: false, message: ex.message });
   }
 };
+
+module.exports.getAllCelebrities = async (req, res, next) => {
+  try {
+    const celebrities = await CelebrityModel.find();
+    return res.json({ status: true, data: celebrities });
+  } catch (ex) {
+    return res.status(500).json({ status: false, message: ex.message });
+  }
+};
