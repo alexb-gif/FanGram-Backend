@@ -4,8 +4,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const session = require('express-session');
 const passport = require('passport');
+const cloudinary = require("cloudinary"); 
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const FacebookStrategy = require('passport-facebook').Strategy;
 const userController = require("./controllers/userController")
 const UserModal = require("./models/userModel")
 
@@ -39,11 +39,11 @@ passport.deserializeUser(async (id, done) => {
 
 // Routes Imports
 const userRoute = require("./routes/userRoutes");
-const videoRoute = require("./routes/videoRoutes");
-const orderRoute = require("./routes/orderRoutes");
-const couponRoute = require("./routes/couponRoutes");
+// const videoRoute = require("./routes/videoRoutes");
+// const orderRoute = require("./routes/orderRoutes");
+// const couponRoute = require("./routes/couponRoutes");
 const celebrityRoute = require("./routes/celebrityRoutes");
-const businessPromotionRoute = require("./routes/businessPromotionRoutes");
+// const businessPromotionRoute = require("./routes/businessPromotionRoutes");
 const { default: mongoose } = require("mongoose");
 
 
@@ -82,17 +82,22 @@ passport.use(
 
 
 
-
+// Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 
 
 // Routes
 app.use("/", userRoute);
-app.use("/", videoRoute);
-app.use("/", orderRoute);
-app.use("/", couponRoute);
+// app.use("/", videoRoute);
+// app.use("/", orderRoute);
+// app.use("/", couponRoute);
 app.use("/", celebrityRoute);
-app.use("/", businessPromotionRoute);
+// app.use("/", businessPromotionRoute);
 
 
 //database connection

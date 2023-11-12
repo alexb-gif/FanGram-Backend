@@ -1,16 +1,19 @@
 const mongoose = require('mongoose');
 
 
-const bookingSchema = new mongoose.Schema({
+const orderSchema = new mongoose.Schema({
    userID: {
      type: mongoose.Schema.Types.ObjectId,
      ref: 'users'
    },
+
    bookingFor: String,
+
    celebrityID: {
      type: mongoose.Schema.Types.ObjectId,
      ref: 'celebrities'
    },
+   
    bookingDate: Date,
 
    price: Number,
@@ -44,4 +47,4 @@ const bookingSchema = new mongoose.Schema({
 });
 
 
-module.exports = mongoose.model("orders", bookingSchema);
+module.exports = mongoose.model("orders", orderSchema);
