@@ -2,24 +2,29 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const session = require('express-session');
-const passport = require('passport');
-const cloudinary = require("cloudinary"); 
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const userController = require("./controllers/userController")
-const UserModal = require("./models/userModel")
+const session = require("express-session");
+const passport = require("passport");
+const cloudinary = require("cloudinary");
+const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
+const userController = require("./controllers/userController");
+const UserModal = require("./models/userModel");
 
 require("dotenv").config();
 
-
-app.use(cors({
-  origin: '*', 
-  
-}));
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(session({ secret: 'ajafja90-20e=1enad', resave: true, saveUninitialized: true }));
-
+app.use(
+  session({
+    secret: "ajafja90-20e=1enad",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -29,25 +34,21 @@ passport.serializeUser((user, done) => done(null, user.id));
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await UserModal.findById(id);
-    
+
     done(null, user);
   } catch (error) {
     done(error, null);
   }
 });
 
-
 // Routes Imports
 const userRoute = require("./routes/userRoutes");
+const businessPromotionRoute = require("./routes/businessPromotionRoutes");
 // const videoRoute = require("./routes/videoRoutes");
 // const orderRoute = require("./routes/orderRoutes");
 // const couponRoute = require("./routes/couponRoutes");
 const celebrityRoute = require("./routes/celebrityRoutes");
-// const businessPromotionRoute = require("./routes/businessPromotionRoutes");
 const { default: mongoose } = require("mongoose");
-
-
-
 
 // Configure Passport.js Google Strategy
 passport.use(
@@ -55,7 +56,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: '/auth/google/callback',
+      callbackURL: "/auth/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       const issuer = profile.id;
@@ -68,7 +69,6 @@ passport.use(
           username: profile.displayName,
           email: profile.emails[0].value,
           authId: issuer,
-          
         });
 
         const savedUser = await newUser.save();
@@ -78,10 +78,6 @@ passport.use(
   )
 );
 
-
-
-
-
 // Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -89,23 +85,17 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-
-
 // Routes
 app.use("/", userRoute);
 // app.use("/", videoRoute);
 // app.use("/", orderRoute);
 // app.use("/", couponRoute);
 app.use("/", celebrityRoute);
-// app.use("/", businessPromotionRoute);
-
+app.use("/", businessPromotionRoute);
 
 //database connection
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("DB Connetion Successfull");
   })
