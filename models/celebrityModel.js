@@ -30,6 +30,8 @@ const celebritySchema = new mongoose.Schema({
 
   responseInDays: { type: Number },
 
+  isFeatured: { type: Boolean, default : false },
+
   videos: [{ type: mongoose.Schema.Types.ObjectId, ref: "videos" }],
 
   offers: [

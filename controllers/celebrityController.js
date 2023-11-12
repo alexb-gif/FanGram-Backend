@@ -4,7 +4,7 @@ const cloudinary = require('cloudinary')
 
 module.exports.addNewCelebrity = async (req, res, next) => {
   try {
-    const { name, ratings, tags, videoPrice, meetAndGreetPrice, responseInDays, offers } = req.body;
+    const { name, ratings, tags, videoPrice, meetAndGreetPrice, responseInDays, offers, isFeatured } = req.body;
 
 
      const myCloud = await cloudinary.v2.uploader.upload(req.body.celebrityImage, {
@@ -17,6 +17,7 @@ module.exports.addNewCelebrity = async (req, res, next) => {
       name,
       videoPrice,
       meetAndGreetPrice,
+      isFeatured,
       ratings: ratings || 0,
       tags: tags || [],
       responseInDays,
