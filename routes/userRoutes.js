@@ -26,6 +26,6 @@ router.get('/auth/google/callback', passport.authenticate('google', { failureRed
 
 router.post("/api/user/register", register);
 router.post("/api/user/login", login);
-router.post("/api/user/update/:id", updateUser)
+router.put("/api/user/update/:id", updateUser)
 
 module.exports = router;
