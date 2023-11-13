@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const cloudinary = require("cloudinary");
 const { generateToken } = require("../utils/generateToken");
 
 module.exports.checkIfUserExists = async (authId) => {
@@ -77,3 +78,41 @@ module.exports.login = async (req, res, next) => {
     return res.json({ status: false, message: ex.message });
   }
 };
+
+module.exports.updateUser = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const { name, gender, dob, phoneNumber, email } = req.body;
+
+    const updateFields = {};
+    
+    if (name) updateFields.name = name;
+    
+    if (gender) updateFields.gender = gender;
+    
+    if (dob) updateFields.dob = dob;
+    
+    if (phoneNumber) updateFields.phoneNumber = phoneNumber;
+    
+    if (email) updateFields.email = email;
+
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path);
+      updateFields.image = result.secure_url;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updateFields, { new: true });
+
+    if (!updatedUser) {
+      return res.json({ status: false, message: 'User not found' });
+    }
+
+    return res.json({ 
+      status: true, 
+      message: 'User details updated successfully', 
+      user: updatedUser 
+    });
+  } catch (ex) {
+    return res.json({ status: false, message: ex.message });
+  }
+}
