@@ -105,8 +105,6 @@ module.exports.approveOrDiscard = async (req, res, next) => {
 
         order.userAwarded = true; // Set userAwarded to true after awarding
         await order.save();
-
-        // Rest of the code...
       }
 
       return res.json({
