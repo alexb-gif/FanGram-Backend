@@ -37,19 +37,40 @@ const orderSchema = new mongoose.Schema({
 
   bookingDate: Date,
 
-  //    ['placed', 'sentToCollab', 'celebAccepted', 'delivered']  = [0,1,2,3]
-  bookingStatus: { type: Number },
+  publicVideo: {
+    type: Boolean,
+    default: true,
+  },
 
-  // videoPublic: Boolean,
+  //    ['placed', 'sentToCollab', 'celebAccepted', 'delivered']  = [0,1,2,3]
+  bookingStatus: { type: Number, default: 0 },
+
+  isDiscarded: { type: Boolean, default: false },
+
+  isDelivered: { type: Boolean, default: false },
+
+  userAwarded: { type: Boolean, default: false },
+
+  // payment picture:
+  // image:{
+  //   public_id: {
+  //       type: String,
+  //       required: true
+  //   },
+  //   url: {
+  //       type: String,
+  //       required: true
+  //   }
+  // },
 
   // videoDeliveryTime: String,
 
-  couponID: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "coupons",
-    },
-  ],
+  // couponID: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "coupons",
+  //   },
+  // ],
 });
 
 module.exports = mongoose.model("orders", orderSchema);

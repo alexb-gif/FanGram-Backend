@@ -15,10 +15,9 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
 
-
-  role:{
-    type:String,
-    default:"user"
+  role: {
+    type: String,
+    default: "user",
   },
 
   authId: {
@@ -38,20 +37,26 @@ const userSchema = new mongoose.Schema({
   phoneNumber: {
     type: String,
   },
-  tcashEarned: Number,
+  tcashEarned: { type: Number, default: 0 },
 
-   coupons: [{
-     type: mongoose.Schema.Types.ObjectId,
-     ref: 'coupon'
-   }],
-   favorites: [{
-     type: mongoose.Schema.Types.ObjectId,
-     ref: 'celebrities'
-   }],
-   bookings: [{
-     type: mongoose.Schema.Types.ObjectId,
-     ref: 'orders'
-   }]
+  coupons: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "coupon",
+    },
+  ],
+  favorites: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "celebrities",
+    },
+  ],
+  bookings: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "orders",
+    },
+  ],
 });
 
 module.exports = mongoose.model("user", userSchema);
