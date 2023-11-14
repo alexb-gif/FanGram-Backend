@@ -47,7 +47,7 @@ const userRoute = require("./routes/userRoutes");
 const businessPromotionRoute = require("./routes/businessPromotionRoutes");
 const videoRoute = require("./routes/videoRoutes");
 // const orderRoute = require("./routes/orderRoutes");
-// const couponRoute = require("./routes/couponRoutes");
+const couponRoute = require("./routes/couponRoutes");
 const celebrityRoute = require("./routes/celebrityRoutes");
 const { default: mongoose } = require("mongoose");
 
@@ -90,7 +90,7 @@ cloudinary.config({
 app.use("/", userRoute);
 app.use("/", videoRoute);
 // app.use("/", orderRoute);
-// app.use("/", couponRoute);
+app.use("/", couponRoute);
 app.use("/", celebrityRoute);
 app.use("/", businessPromotionRoute);
 

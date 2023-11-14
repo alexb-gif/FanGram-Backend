@@ -1,50 +1,55 @@
-const mongoose = require('mongoose');
-
+const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
-   userID: {
-     type: mongoose.Schema.Types.ObjectId,
-     ref: 'users'
-   },
+  userID: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "users",
+  },
 
-   bookingFor: String,
+  celebrityID: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "celebrities",
+  },
 
-   celebrityID: {
-     type: mongoose.Schema.Types.ObjectId,
-     ref: 'celebrities'
-   },
-   
-   bookingDate: Date,
+  // from whome booking is?
+  bookingTo: { name: String, gender: String },
 
-   price: Number,
+  // from whome booking by if for myself then bookingBy has the my name?
+  bookingBy: { name: String, gender: String },
 
-   bookingStatus: String,
+  occasion: String,
 
-   occasion: String,
+  language: String,
 
-   customMessage: String,
+  customMessage: String,
 
-   language: String,
+  fastDelivery: Boolean,
 
-   videoPublic: Boolean,
-
-   videoDeliveryTime: String,
-
-//    ['placed', 'sentToCollab', 'celebAccepted', 'delivered']  = [0,1,2,3]
-    status: { type: Number},
-
-    extras: [{
+  extras: [
+    {
       title: String,
       description: String,
       price: Number,
-    }],
+    },
+  ],
 
-      couponID: {
-     type: mongoose.Schema.Types.ObjectId,
-     ref: 'coupons'
-   },
+  price: String,
 
+  bookingDate: Date,
+
+  //    ['placed', 'sentToCollab', 'celebAccepted', 'delivered']  = [0,1,2,3]
+  bookingStatus: { type: Number },
+
+  // videoPublic: Boolean,
+
+  // videoDeliveryTime: String,
+
+  couponID: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "coupons",
+    },
+  ],
 });
-
 
 module.exports = mongoose.model("orders", orderSchema);
