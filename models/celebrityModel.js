@@ -32,9 +32,7 @@ const celebritySchema = new mongoose.Schema({
 
   isFeatured: { type: Boolean, default : false },
 
-  videos: [{ type: mongoose.Schema.Types.ObjectId, ref: "videos" }],
-
-  offers: [
+   offers: [
     {
       title: String,
       description: String,
