@@ -18,7 +18,7 @@ exports.isAuthenticatedUser = async (req, res, next) => {
  
                     next()
                 } else {
-                    res.status(403).send({ status: "false", message: "Invalid token id" })
+                    res.status(403).send({ status: "false", message: "Please login first" })
                 }
             }
             catch (e) {
