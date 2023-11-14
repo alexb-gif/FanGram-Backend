@@ -48,3 +48,17 @@ module.exports.addNewCelebrityVideo = async (req, res, next) => {
   
 };
 
+
+
+module.exports.getAllVideosByCelebrityId = async (req, res, next) => {
+  try {
+    const celebrityID = req.params.id;
+
+    const videos = await VideoModel.find({celebrityID});
+
+    return res.json({ status: true, data: videos });
+  } catch (ex) {
+    
+    return res.status(500).json({ status: false, message: ex.message });
+  }
+};

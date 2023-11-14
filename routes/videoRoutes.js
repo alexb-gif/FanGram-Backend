@@ -4,7 +4,7 @@ const router = require("express").Router();
 
 
 
-
+router.get("/api/video/celebrity/:id",  VideoController.getAllVideosByCelebrityId);
 router.post("/api/video/addNewCelebrityVideo",  isAuthenticatedUser,authorizeAdmin, VideoController.addNewCelebrityVideo);
 
 
