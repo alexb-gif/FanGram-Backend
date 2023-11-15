@@ -1,17 +1,29 @@
-const CelebrityModel = require("../models/celebrityModel")
-const cloudinary = require('cloudinary')
+const CelebrityModel = require("../models/celebrityModel");
+const cloudinary = require("cloudinary");
 
 
+// Admin
 module.exports.addNewCelebrity = async (req, res, next) => {
   try {
-    const { name, ratings, tags, videoPrice, meetAndGreetPrice, responseInDays, offers, isFeatured } = req.body;
+    const {
+      name,
+      ratings,
+      tags,
+      videoPrice,
+      meetAndGreetPrice,
+      responseInDays,
+      offers,
+      isFeatured,
+    } = req.body;
 
-
-     const myCloud = await cloudinary.v2.uploader.upload(req.body.celebrityImage, {
-        folder: 'celebrityAvatar',
+    const myCloud = await cloudinary.v2.uploader.upload(
+      req.body.celebrityImage,
+      {
+        folder: "celebrityAvatar",
         width: 150,
-        crop: 'scale',
-    })
+        crop: "scale",
+      }
+    );
 
     const newCelebrity = await CelebrityModel.create({
       name,
@@ -23,18 +35,39 @@ module.exports.addNewCelebrity = async (req, res, next) => {
       responseInDays,
       offers: offers || [],
       celebrityImage: {
-            public_id: myCloud.public_id,
-            url: myCloud.secure_url,
-        },
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url,
+      },
     });
 
-    
-
-    return res.json({ status: true, message: 'Celebrity added successfully', data: newCelebrity });
+    return res.json({
+      status: true,
+      message: "Celebrity added successfully",
+      data: newCelebrity,
+    });
   } catch (ex) {
     return res.status(500).json({ status: false, message: ex.message });
   }
 };
+
+
+module.exports.getCelebrityDetails = async (req, res, next) => {
+  try {
+    const {id} = req.params;
+
+    const celebrity = await CelebrityModel.findById(id);
+
+    if (!celebrity) {
+      return res.status(404).json({ status: false, message: 'Celebrity not found' });
+    }
+
+    return res.json({ status: true, data: celebrity });
+  } catch (ex) {
+    return res.status(500).json({ status: false, message: ex.message });
+  }
+};
+
+
 
 module.exports.getAllCelebrities = async (req, res, next) => {
   try {
@@ -64,3 +97,6 @@ module.exports.getAllFeaturedCelebrities = async (req, res, next) => {
     return res.status(500).json({ status: false, message: ex.message });
   }
 };
+
+
+

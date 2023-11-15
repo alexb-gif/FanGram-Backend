@@ -3,7 +3,7 @@ const { authorizeAdmin, isAuthenticatedUser } = require("../utils/authMiddleware
 
 const router = require("express").Router();
 
-
+router.get('/api/celebrity/details/:id', CelebrityController.getCelebrityDetails);
 router.get("/api/celebrity/getAllFeaturedCelebrities", CelebrityController.getAllFeaturedCelebrities);
 router.get("/api/celebrity/getAllCelebrities", CelebrityController.getAllCelebrities);
 router.post("/api/celebrity/addNewCelebrity", isAuthenticatedUser, authorizeAdmin, CelebrityController.addNewCelebrity);

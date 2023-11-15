@@ -6,19 +6,22 @@ exports.isAuthenticatedUser = async (req, res, next) => {
 
         const headerToken = req.headers.authorization?.split(' ')[1];
        
+       
 
         if (headerToken) {
             try {
                 const verify = jwt.verify(headerToken, process.env.JWT_SECRET);
+             
                
 
                 if (verify) {
                     req.user = await UserModel.findById(verify);
+                  
                    
  
                     next()
                 } else {
-                    res.status(403).send({ status: "false", message: "Invalid token id" })
+                    res.status(403).send({ status: "false", message: "Please login first" })
                 }
             }
             catch (e) {
