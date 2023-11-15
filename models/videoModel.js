@@ -19,10 +19,17 @@ const videoSchema = new mongoose.Schema({
 
   celebrityID: { type: mongoose.Schema.Types.ObjectId, ref: 'celebrites' },
 
+  userID: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+
 
   occasion:{type: String},
 
   message:{type: String},
+
+  showPublic:{
+    type:Boolean,
+    default: true
+  }
 
   
   
