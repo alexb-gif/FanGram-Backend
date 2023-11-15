@@ -45,7 +45,16 @@ module.exports.getAllCelebrities = async (req, res, next) => {
   }
 };
 
+module.exports.getCelebritiesWithSameCategories = async (req, res, next) => {
+  const { categories } = req.body;
 
+  try {
+    const celebrities = await Celebrity.find({ categories: { $in: categories } }).limit(8);
+    res.json({ success: true, data: celebrities });
+  } catch (ex) {
+    res.status(500).json({ success: false, message: ex.message });
+  }
+}
 
 module.exports.getAllFeaturedCelebrities = async (req, res, next) => {
   try {

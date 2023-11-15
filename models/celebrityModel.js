@@ -28,6 +28,8 @@ const celebritySchema = new mongoose.Schema({
 
   tags: [{ type: String }],
 
+  categories: [{ type: String, required: true }],
+
   responseInDays: { type: Number },
 
   isFeatured: { type: Boolean, default : false },
