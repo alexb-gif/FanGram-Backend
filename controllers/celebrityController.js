@@ -98,5 +98,3 @@ module.exports.getAllFeaturedCelebrities = async (req, res, next) => {
   }
 };
 
-
-
