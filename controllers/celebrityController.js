@@ -1,7 +1,6 @@
 const CelebrityModel = require("../models/celebrityModel");
 const cloudinary = require("cloudinary");
 
-
 // Admin
 module.exports.addNewCelebrity = async (req, res, next) => {
   try {
@@ -9,6 +8,7 @@ module.exports.addNewCelebrity = async (req, res, next) => {
       name,
       ratings,
       tags,
+      categories,
       videoPrice,
       meetAndGreetPrice,
       responseInDays,
@@ -32,8 +32,10 @@ module.exports.addNewCelebrity = async (req, res, next) => {
       isFeatured,
       ratings: ratings || 0,
       tags: tags || [],
+      categories: categories || [],
       responseInDays,
       offers: offers || [],
+      categories: categories || [],
       celebrityImage: {
         public_id: myCloud.public_id,
         url: myCloud.secure_url,
@@ -50,15 +52,16 @@ module.exports.addNewCelebrity = async (req, res, next) => {
   }
 };
 
-
 module.exports.getCelebrityDetails = async (req, res, next) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const celebrity = await CelebrityModel.findById(id);
 
     if (!celebrity) {
-      return res.status(404).json({ status: false, message: 'Celebrity not found' });
+      return res
+        .status(404)
+        .json({ status: false, message: "Celebrity not found" });
     }
 
     return res.json({ status: true, data: celebrity });
@@ -66,8 +69,6 @@ module.exports.getCelebrityDetails = async (req, res, next) => {
     return res.status(500).json({ status: false, message: ex.message });
   }
 };
-
-
 
 module.exports.getAllCelebrities = async (req, res, next) => {
   try {
@@ -82,12 +83,14 @@ module.exports.getCelebritiesWithSameCategories = async (req, res, next) => {
   const { categories } = req.body;
 
   try {
-    const celebrities = await Celebrity.find({ categories: { $in: categories } }).limit(8);
+    const celebrities = await CelebrityModel.find({
+      categories: { $in: categories },
+    }).limit(8);
     res.json({ success: true, data: celebrities });
   } catch (ex) {
     res.status(500).json({ success: false, message: ex.message });
   }
-}
+};
 
 module.exports.getAllFeaturedCelebrities = async (req, res, next) => {
   try {
@@ -97,4 +100,6 @@ module.exports.getAllFeaturedCelebrities = async (req, res, next) => {
     return res.status(500).json({ status: false, message: ex.message });
   }
 };
+
+
 

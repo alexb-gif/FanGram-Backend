@@ -32,9 +32,9 @@ const celebritySchema = new mongoose.Schema({
 
   responseInDays: { type: Number },
 
-  isFeatured: { type: Boolean, default : false },
+  isFeatured: { type: Boolean, default: false },
 
-   offers: [
+  offers: [
     {
       title: String,
       description: String,

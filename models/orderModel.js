@@ -45,6 +45,10 @@ const orderSchema = new mongoose.Schema({
   //    ['placed', 'sentToCollab', 'celebAccepted', 'delivered']  = [0,1,2,3]
   bookingStatus: { type: Number, default: 0 },
 
+  billingNumber: { type: String },
+
+  bookingEmail: { type: String },
+
   isDiscarded: { type: Boolean, default: false },
 
   isDelivered: { type: Boolean, default: false },
