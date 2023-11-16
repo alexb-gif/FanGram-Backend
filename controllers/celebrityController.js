@@ -13,7 +13,6 @@ module.exports.addNewCelebrity = async (req, res, next) => {
       responseInDays,
       offers,
       isFeatured,
-      categories,
     } = req.body;
 
     const myCloud = await cloudinary.v2.uploader.upload(
@@ -100,3 +99,6 @@ module.exports.getAllFeaturedCelebrities = async (req, res, next) => {
     return res.status(500).json({ status: false, message: ex.message });
   }
 };
+
+
+

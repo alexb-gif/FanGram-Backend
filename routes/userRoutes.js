@@ -3,6 +3,7 @@ const {
   register,
   login,
   updateUser,
+  addFavorite,
   
 } = require("../controllers/userController");
 const apiUrl = require("../utils/baseUrl")
@@ -27,5 +28,6 @@ router.get('/auth/google/callback', passport.authenticate('google', { failureRed
 router.post("/api/user/register", register);
 router.post("/api/user/login", login);
 router.put("/api/user/update/:id", updateUser)
+router.put("/api/user/addFavorite/:id", addFavorite)
 
 module.exports = router;

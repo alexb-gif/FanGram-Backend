@@ -2,6 +2,7 @@ const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const cloudinary = require("cloudinary");
 const { generateToken } = require("../utils/generateToken");
+const celebrityModel = require("../models/celebrityModel");
 
 module.exports.checkIfUserExists = async (authId) => {
   try {
@@ -116,3 +117,31 @@ module.exports.updateUser = async (req, res, next) => {
     return res.json({ status: false, message: ex.message });
   }
 }
+
+module.exports.addFavorite = async (req, res, next) => {
+  const id = req.params.id;
+  const { userId } = req.body;
+
+  console.log("celebrityId:", id);
+  console.log("userId:", userId);
+  
+  try {
+    const user = await User.findById(userId);
+    
+    if (!user) {
+      return res.status(404).json({ status: false, message: 'User not found' });
+    }
+
+
+    if (user.favorites.includes(id)) {
+      await User.updateOne({ $pull: { favorites: id } });
+      res.status(200).json("Celebrity Unliked successfully");
+    } else {
+      await User.updateOne({ $push: { favorites: id } });
+      res.status(200).json("Celebrity Liked successfully");
+    }
+  } catch (ex) {
+    res.status(500).json({ status: false, message: ex.message });
+  }
+};
+
