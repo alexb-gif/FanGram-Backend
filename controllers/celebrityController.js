@@ -101,3 +101,28 @@ module.exports.getAllFeaturedCelebrities = async (req, res, next) => {
     return res.status(500).json({ status: false, message: ex.message });
   }
 };
+
+
+
+module.exports.searchCelebrities = async (req, res) => {
+  try {
+    const { categories, celebrityName } = req.query;
+
+    const searchCriteria = {};
+    if (categories) {
+      searchCriteria.categories = { $in: categories.split(',') };
+    }
+    if (celebrityName) {
+      searchCriteria.name = { $regex: new RegExp(celebrityName, 'i') };
+    }
+
+    const celebrities = await CelebrityModel.find(searchCriteria);
+
+    return res.json({ status: true, data: celebrities });
+  } catch (error) {
+    return res.status(500).json({ status: false, message: error.message });
+  }
+};
+
+
+

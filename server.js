@@ -49,6 +49,7 @@ const videoRoute = require("./routes/videoRoutes");
 const orderRoute = require("./routes/orderRoutes");
 const couponRoute = require("./routes/couponRoutes");
 const celebrityRoute = require("./routes/celebrityRoutes");
+const faqRoute = require("./routes/faqsRoutes");
 const { default: mongoose } = require("mongoose");
 
 // Configure Passport.js Google Strategy
@@ -93,6 +94,7 @@ app.use("/", orderRoute);
 app.use("/", couponRoute);
 app.use("/", celebrityRoute);
 app.use("/", businessPromotionRoute);
+app.use("/", faqRoute);
 
 //database connection
 mongoose
