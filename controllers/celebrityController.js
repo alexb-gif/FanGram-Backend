@@ -10,6 +10,7 @@ module.exports.addNewCelebrity = async (req, res, next) => {
       tags,
       videoPrice,
       meetAndGreetPrice,
+      fanDiscount,
       responseInDays,
       offers,
       isFeatured,
@@ -33,6 +34,7 @@ module.exports.addNewCelebrity = async (req, res, next) => {
       tags: tags || [],
       categories: categories || [],
       responseInDays,
+      fanDiscount,
       offers: offers || [],
       categories: categories || [],
       celebrityImage: {

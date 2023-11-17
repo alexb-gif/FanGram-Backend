@@ -86,15 +86,15 @@ module.exports.updateUser = async (req, res, next) => {
     const { name, gender, dob, phoneNumber, email } = req.body;
 
     const updateFields = {};
-    
+
     if (name) updateFields.name = name;
-    
+
     if (gender) updateFields.gender = gender;
-    
+
     if (dob) updateFields.dob = dob;
-    
+
     if (phoneNumber) updateFields.phoneNumber = phoneNumber;
-    
+
     if (email) updateFields.email = email;
 
     if (req.file) {
@@ -102,42 +102,40 @@ module.exports.updateUser = async (req, res, next) => {
       updateFields.image = result.secure_url;
     }
 
-    const updatedUser = await User.findByIdAndUpdate(userId, updateFields, { new: true });
+    const updatedUser = await User.findByIdAndUpdate(userId, updateFields, {
+      new: true,
+    });
 
     if (!updatedUser) {
-      return res.json({ status: false, message: 'User not found' });
+      return res.json({ status: false, message: "User not found" });
     }
 
-    return res.json({ 
-      status: true, 
-      message: 'User details updated successfully', 
-      user: updatedUser 
+    return res.json({
+      status: true,
+      message: "User details updated successfully",
+      user: updatedUser,
     });
   } catch (ex) {
     return res.json({ status: false, message: ex.message });
   }
-}
+};
 
 module.exports.addFavorite = async (req, res, next) => {
   const id = req.params.id;
   const { userId } = req.body;
 
-  console.log("celebrityId:", id);
-  console.log("userId:", userId);
-  
   try {
     const user = await User.findById(userId);
-    
+
     if (!user) {
-      return res.status(404).json({ status: false, message: 'User not found' });
+      return res.status(404).json({ status: false, message: "User not found" });
     }
 
-
     if (user.favorites.includes(id)) {
-      await User.updateOne({ $pull: { favorites: id } });
+      await User.updateOne({ _id: userId }, { $pull: { favorites: id } });
       res.status(200).json("Celebrity Unliked successfully");
     } else {
-      await User.updateOne({ $push: { favorites: id } });
+      await User.updateOne({ _id: userId }, { $push: { favorites: id } });
       res.status(200).json("Celebrity Liked successfully");
     }
   } catch (ex) {
@@ -150,10 +148,10 @@ module.exports.getFavoriteCelebrities = async (req, res, next) => {
     const userId = req.params.userId;
 
     // Find user by ID
-    const user = await User.findById(userId).populate('favorites');
+    const user = await User.findById(userId).populate("favorites");
 
     if (!user) {
-      return res.status(404).json({ status: false, message: 'User not found' });
+      return res.status(404).json({ status: false, message: "User not found" });
     }
 
     // Extract favorite celebrities from user
