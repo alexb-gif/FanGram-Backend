@@ -1,9 +1,22 @@
 const OrderModel = require("../models/orderModel");
 const UserModel = require("../models/userModel");
+const cloudinary = require("cloudinary");
 
 module.exports.postOrder = async (req, res, next) => {
   try {
-    const order = await OrderModel.create(req.body);
+    const myCloud = await cloudinary.v2.uploader.upload(req.body.image, {
+      folder: "order",
+    });
+
+    const body = {
+      ...req.body,
+      image: {
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url,
+      },
+    };
+
+    const order = await OrderModel.create(body);
 
     return res.json({
       status: true,
@@ -47,7 +60,9 @@ module.exports.getAllMyOrder = async (req, res, next) => {
     }
 
     // Check if the coupon exists
-    const order = await OrderModel.find({ userID: userId });
+    const order = await OrderModel.find({ userID: userId }).populate(
+      "celebrityID"
+    );
 
     return res.json({ status: true, data: order });
   } catch (ex) {

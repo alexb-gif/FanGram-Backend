@@ -101,31 +101,36 @@ module.exports.coupenAvailableForUser = async (req, res, next) => {
 // coupen availed by user
 module.exports.coupenAvailed = async (req, res, next) => {
   try {
-    const { userId, coupenName } = req.query;
-    if (!userId || !coupenName) {
+    const { userId, coupenNames } = req.query;
+
+    if (!userId || !coupenNames) {
       return res
         .status(400)
         .json({ status: false, message: "Insufficient details" });
     }
 
-    // Check if the coupon available to user
-    const coupon = await CoupenModel.findOne({ name: coupenName });
-    if (!coupon) {
-      return res
-        .status(404)
-        .json({ status: false, message: "Coupon not found" });
+    // Ensure coupenNames is an array
+    const couponNamesArray = Array.isArray(coupenNames)
+      ? coupenNames
+      : [coupenNames];
+
+    for (const coupenName of couponNamesArray) {
+      const coupon = await CoupenModel.findOne({ name: coupenName });
+      if (!coupon) {
+        continue; // Skip if coupon is not found, or handle it as needed
+      }
+
+      // Update the givenTo array by removing the userId
+      coupon.givenTo = coupon.givenTo.filter(
+        (item) => item.toString() !== userId
+      );
+
+      await coupon.save();
     }
-
-    coupon.givenTo = coupon.givenTo.filter(
-      (item) => item._id.toString() !== userId
-    );
-
-    await coupon.save();
 
     return res.json({
       status: true,
-      message: "Coupon availed by user",
-      data: coupon,
+      message: "Coupons availed by user",
     });
   } catch (ex) {
     return res.status(500).json({ status: false, message: ex.message });
