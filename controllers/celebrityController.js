@@ -82,11 +82,13 @@ module.exports.getAllCelebrities = async (req, res, next) => {
 
 module.exports.getCelebritiesWithSameCategories = async (req, res, next) => {
   const { categories } = req.body;
-
+  console.log("Hello: ", categories);
   try {
     const celebrities = await CelebrityModel.find({
       categories: { $in: categories },
     }).limit(8);
+
+    console.log("celeb: ", celebrities);
     res.json({ success: true, data: celebrities });
   } catch (ex) {
     res.status(500).json({ success: false, message: ex.message });
@@ -102,18 +104,16 @@ module.exports.getAllFeaturedCelebrities = async (req, res, next) => {
   }
 };
 
-
-
 module.exports.searchCelebrities = async (req, res) => {
   try {
     const { categories, celebrityName } = req.query;
 
     const searchCriteria = {};
     if (categories) {
-      searchCriteria.categories = { $in: categories.split(',') };
+      searchCriteria.categories = { $in: categories.split(",") };
     }
     if (celebrityName) {
-      searchCriteria.name = { $regex: new RegExp(celebrityName, 'i') };
+      searchCriteria.name = { $regex: new RegExp(celebrityName, "i") };
     }
 
     const celebrities = await CelebrityModel.find(searchCriteria);
@@ -123,6 +123,3 @@ module.exports.searchCelebrities = async (req, res) => {
     return res.status(500).json({ status: false, message: error.message });
   }
 };
-
-
-

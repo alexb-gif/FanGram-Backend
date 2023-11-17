@@ -25,7 +25,7 @@ router.post(
   authorizeAdmin,
   CelebrityController.addNewCelebrity
 );
-router.post(
+router.get(
   "/api/celebrity/getCelebritiesByCategories",
   CelebrityController.getCelebritiesWithSameCategories
 );
