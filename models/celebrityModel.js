@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const celebritySchema = new mongoose.Schema({
   name: { type: String, required: true },
 
+  description: { type: String, required: true },
+
   celebrityImage: {
     public_id: {
       type: String,
