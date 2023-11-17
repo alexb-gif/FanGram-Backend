@@ -8,7 +8,6 @@ module.exports.addNewCelebrity = async (req, res, next) => {
       name,
       ratings,
       tags,
-      categories,
       videoPrice,
       meetAndGreetPrice,
       responseInDays,

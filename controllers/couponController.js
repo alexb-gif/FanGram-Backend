@@ -87,9 +87,7 @@ module.exports.coupenAvailableForUser = async (req, res, next) => {
 
     // Check if the user already has the coupon
     if (coupon.givenTo.includes(userId)) {
-      return res
-        .status(400)
-        .json({ status: true, message: "You access to this coupen" });
+      return res.status(200).json({ status: true, data: coupon });
     } else {
       return res
         .status(400)
