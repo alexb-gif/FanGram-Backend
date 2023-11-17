@@ -4,6 +4,7 @@ const {
   login,
   updateUser,
   addFavorite,
+  getFavoriteCelebrities,
   
 } = require("../controllers/userController");
 const apiUrl = require("../utils/baseUrl")
@@ -29,5 +30,6 @@ router.post("/api/user/register", register);
 router.post("/api/user/login", login);
 router.put("/api/user/update/:id", updateUser)
 router.put("/api/user/addFavorite/:id", addFavorite)
+router.get('/api/user/favoriteCelebrities/:userId', getFavoriteCelebrities);
 
 module.exports = router;

@@ -145,3 +145,22 @@ module.exports.addFavorite = async (req, res, next) => {
   }
 };
 
+module.exports.getFavoriteCelebrities = async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+
+    // Find user by ID
+    const user = await User.findById(userId).populate('favorites');
+
+    if (!user) {
+      return res.status(404).json({ status: false, message: 'User not found' });
+    }
+
+    // Extract favorite celebrities from user
+    const favoriteCelebrities = user.favorites;
+
+    res.status(200).json({ status: true, data: favoriteCelebrities });
+  } catch (ex) {
+    res.status(500).json({ status: false, message: ex.message });
+  }
+};
