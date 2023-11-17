@@ -25,6 +25,7 @@ const celebritySchema = new mongoose.Schema({
   },
 
   ratings: { type: Number, default: 0 },
+  fanDiscount: { type: String, required: true },
 
   tags: [{ type: String }],
 

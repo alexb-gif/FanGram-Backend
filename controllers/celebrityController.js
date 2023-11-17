@@ -10,6 +10,7 @@ module.exports.addNewCelebrity = async (req, res, next) => {
       tags,
       videoPrice,
       meetAndGreetPrice,
+      fanDiscount,
       responseInDays,
       offers,
       isFeatured,
@@ -33,6 +34,7 @@ module.exports.addNewCelebrity = async (req, res, next) => {
       tags: tags || [],
       categories: categories || [],
       responseInDays,
+      fanDiscount,
       offers: offers || [],
       categories: categories || [],
       celebrityImage: {
@@ -99,6 +101,3 @@ module.exports.getAllFeaturedCelebrities = async (req, res, next) => {
     return res.status(500).json({ status: false, message: ex.message });
   }
 };
-
-
-
