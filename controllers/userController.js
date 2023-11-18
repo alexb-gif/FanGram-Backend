@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const cloudinary = require("cloudinary");
 const { generateToken } = require("../utils/generateToken");
 const celebrityModel = require("../models/celebrityModel");
+const userModel = require("../models/userModel");
 
 module.exports.checkIfUserExists = async (authId) => {
   try {
@@ -81,42 +82,51 @@ module.exports.login = async (req, res, next) => {
 };
 
 module.exports.updateUser = async (req, res, next) => {
+  const { userId } = req.query;
+  let { userData } = req.body;
+
+  console.log("userData: ", userData);
+
+  if (!userId) {
+    return res
+      .status(400)
+      .json({ status: false, message: "Insufficient credentials" });
+  }
+
   try {
-    const { userId } = req.params;
-    const { name, gender, dob, phoneNumber, email } = req.body;
-
-    const updateFields = {};
-
-    if (name) updateFields.name = name;
-
-    if (gender) updateFields.gender = gender;
-
-    if (dob) updateFields.dob = dob;
-
-    if (phoneNumber) updateFields.phoneNumber = phoneNumber;
-
-    if (email) updateFields.email = email;
-
-    if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.path);
-      updateFields.image = result.secure_url;
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ status: false, message: "User not found" });
     }
 
-    const updatedUser = await User.findByIdAndUpdate(userId, updateFields, {
+    // Check if image needs to be uploaded
+    if (typeof userData.image === "string" && userData.image !== "") {
+      // Assuming image is a base64 string or a new file to be uploaded
+      const myCloud = await cloudinary.uploader.upload(userData.image, {
+        folder: "avatars",
+      });
+
+      // Update userData with Cloudinary image info
+      userData.image = {
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url,
+      };
+    }
+
+    const updatedUser = await userModel.findByIdAndUpdate(userId, userData, {
       new: true,
     });
-
-    if (!updatedUser) {
-      return res.json({ status: false, message: "User not found" });
-    }
 
     return res.json({
       status: true,
       message: "User details updated successfully",
       user: updatedUser,
     });
-  } catch (ex) {
-    return res.json({ status: false, message: ex.message });
+  } catch (error) {
+    console.log("Error in updateUser: ", error);
+    return res
+      .status(500)
+      .json({ status: false, message: "Internal Server Error" });
   }
 };
 
@@ -163,8 +173,6 @@ module.exports.getFavoriteCelebrities = async (req, res, next) => {
   }
 };
 
-
-
 module.exports.getUserById = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -172,10 +180,9 @@ module.exports.getUserById = async (req, res) => {
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ status: false, message: 'User not found' });
+      return res.status(404).json({ status: false, message: "User not found" });
     }
 
-   
     return res.json({ status: true, data: user });
   } catch (error) {
     return res.status(500).json({ status: false, message: error.message });

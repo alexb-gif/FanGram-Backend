@@ -27,7 +27,7 @@ router.get(
 router.post("/api/user/register", register);
 router.post("/api/user/login", login);
 router.get("/api/user/details/:id", getUserById);
-router.put("/api/user/update/:id", updateUser);
+router.put("/api/user/update", updateUser);
 router.put("/api/user/addFavorite/:id", addFavorite);
 router.get("/api/user/favoriteCelebrities/:userId", getFavoriteCelebrities);
 

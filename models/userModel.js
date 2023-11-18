@@ -39,6 +39,17 @@ const userSchema = new mongoose.Schema({
   },
   tcashEarned: { type: Number, default: 0 },
 
+  image: {
+    public_id: {
+      type: String,
+      required: true,
+    },
+    url: {
+      type: String,
+      required: true,
+    },
+  },
+
   coupons: [
     {
       type: mongoose.Schema.Types.ObjectId,

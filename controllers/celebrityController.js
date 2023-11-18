@@ -18,9 +18,6 @@ module.exports.addNewCelebrity = async (req, res, next) => {
       isFeatured,
     } = req.body;
 
-
-    
-
     const myCloud = await cloudinary.v2.uploader.upload(
       req.body.celebrityImage,
       {
@@ -93,7 +90,7 @@ module.exports.getCelebritiesWithSameCategories = async (req, res, next) => {
       categories: { $in: categories },
     }).limit(8);
 
-    console.log("celeb: ", celebrities);
+    // console.log("celeb: ", celebrities);
     res.json({ success: true, data: celebrities });
   } catch (ex) {
     res.status(500).json({ success: false, message: ex.message });
