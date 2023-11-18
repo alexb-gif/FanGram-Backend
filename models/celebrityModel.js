@@ -40,8 +40,14 @@ const celebritySchema = new mongoose.Schema({
   offers: [
     {
       title: String,
-      description: String,
-      price: String,
+      price: Number,
+    },
+  ],
+
+   extras: [
+    {
+      title: String,
+      price: Number,
     },
   ],
 
