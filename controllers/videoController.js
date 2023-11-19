@@ -67,11 +67,8 @@ module.exports.editCelebrityVideo = async (req, res, next) => {
   }
 };
 
-<<<<<<< HEAD
 
 // Admin API
-=======
->>>>>>> d3d93bbeb56db7caf5d5c60a9d9cb0451019a262
 module.exports.getAllVideosByCelebrityId = async (req, res, next) => {
   try {
     const celebrityID = req.params.id;
