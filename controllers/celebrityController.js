@@ -87,6 +87,7 @@ module.exports.editCelebrity = async (req, res, next) => {
     existingCelebrity.meetAndGreetPrice = meetAndGreetPrice || existingCelebrity.meetAndGreetPrice;
     existingCelebrity.responseInDays = responseInDays || existingCelebrity.responseInDays;
     existingCelebrity.offers = offers || existingCelebrity.offers;
+    existingCelebrity.extras = extras || existingCelebrity.extras;
     existingCelebrity.isFeatured = isFeatured || existingCelebrity.isFeatured;
     existingCelebrity.celebrityImage = celebrityImage || existingCelebrity.celebrityImage;
 
