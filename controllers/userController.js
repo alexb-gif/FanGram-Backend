@@ -188,3 +188,26 @@ module.exports.getUserById = async (req, res) => {
     return res.status(500).json({ status: false, message: error.message });
   }
 };
+
+module.exports.googleAuth = async (req, res, next) => {
+  console.log("GoogleAuth:", req.body)
+  try {
+      const user = await User.findOne({email: req.body.email});
+      if (user) {
+          res.cookie("access_token", token, {
+              httpOnly: true
+          }).status(200).json(user._doc)
+      } else {
+          const newUser = new User({
+              ...req.body,
+              // fromGoogle: true,
+          });
+          const savedUser = await newUser.save();
+          res.cookie("access_token", token, {
+              httpOnly: true
+          }).status(200).json(savedUser._doc)
+      }
+  } catch (error) {
+      next(error);
+  }
+};

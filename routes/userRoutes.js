@@ -6,6 +6,7 @@ const {
   addFavorite,
   getFavoriteCelebrities,
   getUserById,
+  googleAuth,
 } = require("../controllers/userController");
 const apiUrl = require("../utils/baseUrl");
 
@@ -24,6 +25,8 @@ router.get(
   }
 );
 
+//GOOGLE AUTHENTICATION
+router.post('/auth/google', googleAuth)
 router.post("/api/user/register", register);
 router.post("/api/user/login", login);
 router.get("/api/user/details/:id", getUserById);
