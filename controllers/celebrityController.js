@@ -71,7 +71,8 @@ module.exports.editCelebrity = async (req, res, next) => {
       offers,
       extras,
       isFeatured,
-      celebrityImage
+      celebrityImage,
+      recentVideos
     } = req.body;
 
     
@@ -90,6 +91,7 @@ module.exports.editCelebrity = async (req, res, next) => {
     existingCelebrity.extras = extras || existingCelebrity.extras;
     existingCelebrity.isFeatured = isFeatured || existingCelebrity.isFeatured;
     existingCelebrity.celebrityImage = celebrityImage || existingCelebrity.celebrityImage;
+     existingCelebrity.recentVideos = recentVideos || existingCelebrity.recentVideos; 
 
     
     await existingCelebrity.save();

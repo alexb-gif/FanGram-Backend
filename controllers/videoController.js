@@ -1,6 +1,5 @@
 const CelebrityModel = require("../models/celebrityModel");
 const VideoModel = require("../models/videoModel");
-const { uploadVideosToCloudinary } = require("../utils/uploadToCloudinary");
 
 
 
@@ -8,21 +7,7 @@ const { uploadVideosToCloudinary } = require("../utils/uploadToCloudinary");
 module.exports.addNewCelebrityVideo = async (req, res, next) => {
 
      try {
-    const { ratings, celebrityID, occasion, message } = req.body;
-
-
-    let CelebrityVideos = [];
-
-    if (typeof req.body.celebrityVideos === "string") {
-      CelebrityVideos.push(req.body.celebrityVideos);
-    } else {
-      CelebrityVideos = req.body.celebrityVideos;
-    }
-
-    // Upload videos to Cloudinary
-    const celebrityVideosLinks = await uploadVideosToCloudinary(CelebrityVideos);
-
-   
+    const { ratings, celebrityID, occasion, message, celebrityVideo } = req.body;
 
 
     const celebrity = await CelebrityModel.findById(celebrityID);
@@ -31,7 +16,7 @@ module.exports.addNewCelebrityVideo = async (req, res, next) => {
     }
 
     const newVideo = await VideoModel.create({
-      celebrityVideos: celebrityVideosLinks,
+      celebrityVideo,
       ratings,
       celebrityID,
       occasion,
