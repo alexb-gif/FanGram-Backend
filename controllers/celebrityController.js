@@ -7,6 +7,7 @@ module.exports.addNewCelebrity = async (req, res, next) => {
     const {
       name,
       description,
+      celebrityImage,
       ratings,
       tags,
       categories,
@@ -19,14 +20,7 @@ module.exports.addNewCelebrity = async (req, res, next) => {
       isFeatured,
     } = req.body;
 
-    const myCloud = await cloudinary.v2.uploader.upload(
-      req.body.celebrityImage,
-      {
-        folder: "celebrityAvatar",
-        width: 150,
-        crop: "scale",
-      }
-    );
+   
 
     const newCelebrity = await CelebrityModel.create({
       name,
@@ -41,10 +35,7 @@ module.exports.addNewCelebrity = async (req, res, next) => {
       fanDiscount,
       offers: offers || [],
       extras: extras || [],
-      celebrityImage: {
-        public_id: myCloud.public_id,
-        url: myCloud.secure_url,
-      },
+      celebrityImage
     });
 
     return res.json({
