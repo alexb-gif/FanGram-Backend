@@ -72,7 +72,7 @@ module.exports.editCelebrity = async (req, res, next) => {
       extras,
       isFeatured,
       celebrityImage,
-      recentVideos
+      recentVideos,
     } = req.body;
 
     // Update the celebrity details in the database
@@ -87,9 +87,12 @@ module.exports.editCelebrity = async (req, res, next) => {
       responseInDays || existingCelebrity.responseInDays;
     existingCelebrity.offers = offers || existingCelebrity.offers;
     existingCelebrity.extras = extras || existingCelebrity.extras;
-    existingCelebrity.isFeatured = isFeatured || existingCelebrity.isFeatured;
-    existingCelebrity.celebrityImage = celebrityImage || existingCelebrity.celebrityImage;
-     existingCelebrity.recentVideos = recentVideos || existingCelebrity.recentVideos; 
+    existingCelebrity.isFeatured = isFeatured;
+
+    existingCelebrity.celebrityImage =
+      celebrityImage || existingCelebrity.celebrityImage;
+    existingCelebrity.recentVideos =
+      recentVideos || existingCelebrity.recentVideos;
 
     await existingCelebrity.save();
 
@@ -153,7 +156,7 @@ module.exports.getAllCelebrities = async (req, res, next) => {
 
 module.exports.getCelebritiesWithSameCategories = async (req, res, next) => {
   const { categories } = req.body;
-  console.log("Hello: ", categories);
+  // console.log("Hello: ", categories);
   try {
     const celebrities = await CelebrityModel.find({
       categories: { $in: categories },

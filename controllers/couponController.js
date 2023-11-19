@@ -3,13 +3,12 @@ const CoupenModel = require("../models/couponModel");
 
 module.exports.addCoupen = async (req, res, next) => {
   try {
-    const { name, code, priceOff, percentOff } = req.body;
+    const { name, code, priceOff } = req.body;
 
     const coupen = await CoupenModel.create({
       name,
       code,
       priceOff,
-      percentOff,
     });
 
     return res.json({
