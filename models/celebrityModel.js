@@ -1,20 +1,15 @@
 const mongoose = require("mongoose");
 
 const celebritySchema = new mongoose.Schema({
-  
+
   name: { type: String, required: true },
 
   description: { type: String, required: true },
 
   celebrityImage: {
-    public_id: {
+   
       type: String,
       required: true,
-    },
-    url: {
-      type: String,
-      required: true,
-    },
   },
 
   videoPrice: {
