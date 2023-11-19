@@ -74,7 +74,7 @@ module.exports.getAllMyOrder = async (req, res, next) => {
 // admin funcs:
 module.exports.allOrder = async (req, res, next) => {
   try {
-    const result = await OrderModel.find();
+    const result = await OrderModel.find().populate("celebrityID", "name");
     return res.json({ status: true, data: result });
   } catch (ex) {
     return res.status(500).json({ status: false, message: ex.message });

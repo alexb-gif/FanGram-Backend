@@ -20,8 +20,6 @@ module.exports.addNewCelebrity = async (req, res, next) => {
       isFeatured,
     } = req.body;
 
-   
-
     const newCelebrity = await CelebrityModel.create({
       name,
       description,
@@ -35,7 +33,7 @@ module.exports.addNewCelebrity = async (req, res, next) => {
       fanDiscount,
       offers: offers || [],
       extras: extras || [],
-      celebrityImage
+      celebrityImage,
     });
 
     return res.json({
@@ -44,28 +42,87 @@ module.exports.addNewCelebrity = async (req, res, next) => {
       data: newCelebrity,
     });
   } catch (ex) {
+    console.log("error: ", ex);
     return res.status(500).json({ status: false, message: ex.message });
   }
 };
 
+module.exports.editCelebrity = async (req, res, next) => {
+  try {
+    const celebrityId = req.params.id;
+
+    const existingCelebrity = await CelebrityModel.findById(celebrityId);
+
+    if (!existingCelebrity) {
+      return res
+        .status(404)
+        .json({ status: false, message: "Celebrity not found" });
+    }
+
+    // Update the celebrity details
+    const {
+      name,
+      ratings,
+      tags,
+      categories,
+      videoPrice,
+      meetAndGreetPrice,
+      responseInDays,
+      offers,
+      extras,
+      isFeatured,
+      celebrityImage,
+      recentVideos
+    } = req.body;
+
+    // Update the celebrity details in the database
+    existingCelebrity.name = name || existingCelebrity.name;
+    existingCelebrity.ratings = ratings || existingCelebrity.ratings;
+    existingCelebrity.tags = tags || existingCelebrity.tags;
+    existingCelebrity.categories = categories || existingCelebrity.categories;
+    existingCelebrity.videoPrice = videoPrice || existingCelebrity.videoPrice;
+    existingCelebrity.meetAndGreetPrice =
+      meetAndGreetPrice || existingCelebrity.meetAndGreetPrice;
+    existingCelebrity.responseInDays =
+      responseInDays || existingCelebrity.responseInDays;
+    existingCelebrity.offers = offers || existingCelebrity.offers;
+    existingCelebrity.extras = extras || existingCelebrity.extras;
+    existingCelebrity.isFeatured = isFeatured || existingCelebrity.isFeatured;
+    existingCelebrity.celebrityImage = celebrityImage || existingCelebrity.celebrityImage;
+     existingCelebrity.recentVideos = recentVideos || existingCelebrity.recentVideos; 
+
+    await existingCelebrity.save();
+
+    return res.json({
+      status: true,
+      message: "Celebrity updated successfully",
+      data: existingCelebrity,
+    });
+  } catch (ex) {
+    return res.status(500).json({ status: false, message: ex.message });
+  }
+};
 
 // Admin
 module.exports.deleteCelebrity = async (req, res) => {
   try {
-    const  celebrityId  = req.params.id;
+    const celebrityId = req.params.id;
 
     const celebrity = await CelebrityModel.findByIdAndDelete(celebrityId);
     if (!celebrity) {
-      return res.status(404).json({ status: false, message: 'Celebrity not found' });
+      return res
+        .status(404)
+        .json({ status: false, message: "Celebrity not found" });
     }
 
-
-    return res.json({ status: true, message: 'Celebrity deleted successfully' });
+    return res.json({
+      status: true,
+      message: "Celebrity deleted successfully",
+    });
   } catch (error) {
     return res.status(500).json({ status: false, message: error.message });
   }
 };
-
 
 module.exports.getCelebrityDetails = async (req, res, next) => {
   try {

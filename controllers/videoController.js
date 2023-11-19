@@ -1,6 +1,5 @@
 const CelebrityModel = require("../models/celebrityModel");
 const VideoModel = require("../models/videoModel");
-const { uploadVideosToCloudinary } = require("../utils/uploadToCloudinary");
 
 
 
@@ -8,21 +7,7 @@ const { uploadVideosToCloudinary } = require("../utils/uploadToCloudinary");
 module.exports.addNewCelebrityVideo = async (req, res, next) => {
 
      try {
-    const { ratings, celebrityID, occasion, message } = req.body;
-
-
-    let CelebrityVideos = [];
-
-    if (typeof req.body.celebrityVideos === "string") {
-      CelebrityVideos.push(req.body.celebrityVideos);
-    } else {
-      CelebrityVideos = req.body.celebrityVideos;
-    }
-
-    // Upload videos to Cloudinary
-    const celebrityVideosLinks = await uploadVideosToCloudinary(CelebrityVideos);
-
-   
+    const { ratings, celebrityID, occasion, message, celebrityVideo } = req.body;
 
 
     const celebrity = await CelebrityModel.findById(celebrityID);
@@ -31,7 +16,7 @@ module.exports.addNewCelebrityVideo = async (req, res, next) => {
     }
 
     const newVideo = await VideoModel.create({
-      celebrityVideos: celebrityVideosLinks,
+      celebrityVideo,
       ratings,
       celebrityID,
       occasion,
@@ -49,6 +34,33 @@ module.exports.addNewCelebrityVideo = async (req, res, next) => {
 };
 
 
+// Admin
+module.exports.editCelebrityVideo = async (req, res, next) => {
+  try {
+    const videoID = req.params.id
+    const { ratings, occasion, message, celebrityVideo } = req.body;
+
+    const video = await VideoModel.findById(videoID);
+    if (!video) {
+      return res.status(404).json({ status: false, message: 'Video not found' });
+    }
+
+    // Update video details
+    video.ratings = ratings;
+    video.occasion = occasion;
+    video.message = message;
+    video.celebrityVideo=celebrityVideo
+
+    // Save the updated video
+    const updatedVideo = await video.save();
+
+    return res.json({ status: true, message: 'Video updated successfully', data: updatedVideo });
+  } catch (ex) {
+    return res.status(500).json({ status: false, message: ex.message });
+  }
+};
+
+
 
 module.exports.getAllVideosByCelebrityId = async (req, res, next) => {
   try {
@@ -59,6 +71,24 @@ module.exports.getAllVideosByCelebrityId = async (req, res, next) => {
     return res.json({ status: true, data: videos });
   } catch (ex) {
     
+    return res.status(500).json({ status: false, message: ex.message });
+  }
+};
+
+
+
+module.exports.getVideoById = async (req, res, next) => {
+  try {
+    const videoID = req.params.id;
+
+    const video = await VideoModel.findById(videoID);
+
+    if (!video) {
+      return res.status(404).json({ status: false, message: 'Video not found' });
+    }
+
+    return res.json({ status: true, data: video });
+  } catch (ex) {
     return res.status(500).json({ status: false, message: ex.message });
   }
 };
