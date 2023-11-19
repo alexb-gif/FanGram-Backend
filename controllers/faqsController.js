@@ -28,3 +28,43 @@ module.exports.getAllFAQs = async (req, res) => {
     return res.status(500).json({ status: false, message: error.message });
   }
 };
+
+
+
+module.exports.getFAQById = async (req, res) => {
+  try {
+    const faqID = req.params.id;
+
+    const faq = await FAQsModel.findById(faqID);
+
+    if (!faq) {
+      return res.status(404).json({ status: false, message: 'FAQ not found' });
+    }
+
+    return res.json({ status: true, data: faq });
+  } catch (error) {
+    return res.status(500).json({ status: false, message: error.message });
+  }
+};
+
+module.exports.editFAQById = async (req, res) => {
+  try {
+    const faqID = req.params.id;
+    const { question, answer } = req.body;
+
+    const faq = await FAQsModel.findById(faqID);
+
+    if (!faq) {
+      return res.status(404).json({ status: false, message: 'FAQ not found' });
+    }
+
+    faq.question = question;
+    faq.answer = answer;
+
+    const updatedFAQ = await faq.save();
+
+    return res.json({ status: true, message: 'FAQ updated successfully', data: updatedFAQ });
+  } catch (error) {
+    return res.status(500).json({ status: false, message: error.message });
+  }
+};

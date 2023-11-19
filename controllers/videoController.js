@@ -61,7 +61,7 @@ module.exports.editCelebrityVideo = async (req, res, next) => {
 };
 
 
-
+// Admin API
 module.exports.getAllVideosByCelebrityId = async (req, res, next) => {
   try {
     const celebrityID = req.params.id;
@@ -71,6 +71,23 @@ module.exports.getAllVideosByCelebrityId = async (req, res, next) => {
     return res.json({ status: true, data: videos });
   } catch (ex) {
     
+    return res.status(500).json({ status: false, message: ex.message });
+  }
+};
+
+
+// Get all public videos of a specific celebrity
+module.exports.getPublicVideosByCelebrityId = async (req, res, next) => {
+  try {
+    const celebrityID = req.params.id;
+
+    const publicVideos = await VideoModel.find({
+      celebrityID,
+      showPublic: true,
+    });
+
+    return res.json({ status: true, data: publicVideos });
+  } catch (ex) {
     return res.status(500).json({ status: false, message: ex.message });
   }
 };
