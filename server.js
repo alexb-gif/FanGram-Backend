@@ -13,17 +13,19 @@ require("dotenv").config();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://fan-gram.vercel.app"],
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:3001",
+      "https://fan-gram.vercel.app",
+    ],
   })
 );
 
 // app.use(express.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
 
-
-app.use(bodyParser.json({ limit: '10mb' }));
-app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
-
+app.use(bodyParser.json({ limit: "10mb" }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
 
 app.use(
   session({
