@@ -34,6 +34,15 @@ router.post(
   CelebrityController.addNewCelebrity
 );
 
+
+
+router.put(
+  "/api/celebrity/update/:id",
+  isAuthenticatedUser,
+  authorizeAdmin,
+  CelebrityController.editCelebrity
+);
+
 router.delete('/api/celebrity/delete/:id',  isAuthenticatedUser,
   authorizeAdmin, CelebrityController.deleteCelebrity);
 

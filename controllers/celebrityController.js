@@ -47,6 +47,61 @@ module.exports.addNewCelebrity = async (req, res, next) => {
   }
 };
 
+module.exports.editCelebrity = async (req, res, next) => {
+  try {
+    const celebrityId = req.params.id;
+
+    const existingCelebrity = await CelebrityModel.findById(celebrityId);
+
+    if (!existingCelebrity) {
+      return res
+        .status(404)
+        .json({ status: false, message: "Celebrity not found" });
+    }
+
+    // Update the celebrity details
+    const {
+      name,
+      ratings,
+      tags,
+      categories,
+      videoPrice,
+      meetAndGreetPrice,
+      responseInDays,
+      offers,
+      extras,
+      isFeatured,
+      celebrityImage,
+    } = req.body;
+
+    // Update the celebrity details in the database
+    existingCelebrity.name = name || existingCelebrity.name;
+    existingCelebrity.ratings = ratings || existingCelebrity.ratings;
+    existingCelebrity.tags = tags || existingCelebrity.tags;
+    existingCelebrity.categories = categories || existingCelebrity.categories;
+    existingCelebrity.videoPrice = videoPrice || existingCelebrity.videoPrice;
+    existingCelebrity.meetAndGreetPrice =
+      meetAndGreetPrice || existingCelebrity.meetAndGreetPrice;
+    existingCelebrity.responseInDays =
+      responseInDays || existingCelebrity.responseInDays;
+    existingCelebrity.offers = offers || existingCelebrity.offers;
+    existingCelebrity.extras = extras || existingCelebrity.extras;
+    existingCelebrity.isFeatured = isFeatured || existingCelebrity.isFeatured;
+    existingCelebrity.celebrityImage =
+      celebrityImage || existingCelebrity.celebrityImage;
+
+    await existingCelebrity.save();
+
+    return res.json({
+      status: true,
+      message: "Celebrity updated successfully",
+      data: existingCelebrity,
+    });
+  } catch (ex) {
+    return res.status(500).json({ status: false, message: ex.message });
+  }
+};
+
 // Admin
 module.exports.deleteCelebrity = async (req, res) => {
   try {
