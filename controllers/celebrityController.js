@@ -20,8 +20,6 @@ module.exports.addNewCelebrity = async (req, res, next) => {
       isFeatured,
     } = req.body;
 
-   
-
     const newCelebrity = await CelebrityModel.create({
       name,
       description,
@@ -35,7 +33,7 @@ module.exports.addNewCelebrity = async (req, res, next) => {
       fanDiscount,
       offers: offers || [],
       extras: extras || [],
-      celebrityImage
+      celebrityImage,
     });
 
     return res.json({
@@ -44,28 +42,31 @@ module.exports.addNewCelebrity = async (req, res, next) => {
       data: newCelebrity,
     });
   } catch (ex) {
+    console.log("error: ", ex);
     return res.status(500).json({ status: false, message: ex.message });
   }
 };
 
-
 // Admin
 module.exports.deleteCelebrity = async (req, res) => {
   try {
-    const  celebrityId  = req.params.id;
+    const celebrityId = req.params.id;
 
     const celebrity = await CelebrityModel.findByIdAndDelete(celebrityId);
     if (!celebrity) {
-      return res.status(404).json({ status: false, message: 'Celebrity not found' });
+      return res
+        .status(404)
+        .json({ status: false, message: "Celebrity not found" });
     }
 
-
-    return res.json({ status: true, message: 'Celebrity deleted successfully' });
+    return res.json({
+      status: true,
+      message: "Celebrity deleted successfully",
+    });
   } catch (error) {
     return res.status(500).json({ status: false, message: error.message });
   }
 };
-
 
 module.exports.getCelebrityDetails = async (req, res, next) => {
   try {
