@@ -15,7 +15,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "http://localhost:3001",
+      "https://fan-gram-admin-panel.vercel.app",
       "https://fan-gram.vercel.app",
     ],
   })
