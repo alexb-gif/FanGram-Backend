@@ -19,15 +19,24 @@ router.get(
   "/api/celebrity/getAllCelebrities",
   CelebrityController.getAllCelebrities
 );
+
+
+router.post(
+  "/api/celebrity/getCelebritiesByCategories",
+  CelebrityController.getCelebritiesWithSameCategories
+);
+
+
 router.post(
   "/api/celebrity/addNewCelebrity",
   isAuthenticatedUser,
   authorizeAdmin,
   CelebrityController.addNewCelebrity
 );
-router.post(
-  "/api/celebrity/getCelebritiesByCategories",
-  CelebrityController.getCelebritiesWithSameCategories
-);
+
+router.delete('/api/celebrity/delete/:id',  isAuthenticatedUser,
+  authorizeAdmin, CelebrityController.deleteCelebrity);
+
+
 
 module.exports = router;

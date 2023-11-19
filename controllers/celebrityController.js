@@ -15,6 +15,7 @@ module.exports.addNewCelebrity = async (req, res, next) => {
       fanDiscount,
       responseInDays,
       offers,
+      extras,
       isFeatured,
     } = req.body;
 
@@ -39,6 +40,7 @@ module.exports.addNewCelebrity = async (req, res, next) => {
       responseInDays,
       fanDiscount,
       offers: offers || [],
+      extras: extras || [],
       celebrityImage: {
         public_id: myCloud.public_id,
         url: myCloud.secure_url,
@@ -54,6 +56,25 @@ module.exports.addNewCelebrity = async (req, res, next) => {
     return res.status(500).json({ status: false, message: ex.message });
   }
 };
+
+
+// Admin
+module.exports.deleteCelebrity = async (req, res) => {
+  try {
+    const  celebrityId  = req.params.id;
+
+    const celebrity = await CelebrityModel.findByIdAndDelete(celebrityId);
+    if (!celebrity) {
+      return res.status(404).json({ status: false, message: 'Celebrity not found' });
+    }
+
+
+    return res.json({ status: true, message: 'Celebrity deleted successfully' });
+  } catch (error) {
+    return res.status(500).json({ status: false, message: error.message });
+  }
+};
+
 
 module.exports.getCelebrityDetails = async (req, res, next) => {
   try {
