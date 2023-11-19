@@ -37,7 +37,10 @@ module.exports.orderDetails = async (req, res, next) => {
     }
 
     // Check if the coupon exists
-    const order = await OrderModel.findById(orderId);
+    const order = await OrderModel.findById(orderId)
+      .populate("celebrityID", "name")
+      .populate("userID", "username");
+    // .populate("userID", "username");
     if (!order) {
       return res
         .status(404)
@@ -135,7 +138,7 @@ module.exports.approveOrDiscard = async (req, res, next) => {
 
 module.exports.updateOrderStatus = async (req, res, next) => {
   try {
-    // decision -> approve, discard
+    //    ['placed', 'sentToCollab', 'celebAccepted', 'delivered']  = [0,1,2,3]
     const { orderId, orderStatus } = req.body;
     if (!orderId || !orderStatus) {
       return res
@@ -165,6 +168,7 @@ module.exports.deliverOrder = async (req, res, next) => {
   try {
     // decision -> approve, discard
     const { orderId } = req.body;
+
     if (!orderId) {
       return res
         .status(400)
@@ -178,6 +182,8 @@ module.exports.deliverOrder = async (req, res, next) => {
     }
 
     order.isDelivered = true;
+    order.bookingStatus = 3;
+
     await order.save();
     // send mail
     return res.json({

@@ -26,9 +26,11 @@ router.get(
 );
 
 //GOOGLE AUTHENTICATION
-router.post('/auth/google', googleAuth)
+router.post("/auth/google", googleAuth);
 router.post("/api/user/register", register);
 router.post("/api/user/login", login);
+router.post("/api/user/googleAuth", googleAuth);
+
 router.get("/api/user/details/:id", getUserById);
 router.put("/api/user/update", updateUser);
 router.put("/api/user/addFavorite/:id", addFavorite);

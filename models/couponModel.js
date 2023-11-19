@@ -4,7 +4,7 @@ const couponSchema = new mongoose.Schema({
   name: { type: String, required: true },
   code: { type: String, required: true },
   priceOff: { type: Number },
-  percentOff: { type: Number },
+
   givenTo: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 });
 

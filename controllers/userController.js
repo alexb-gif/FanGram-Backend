@@ -190,24 +190,30 @@ module.exports.getUserById = async (req, res) => {
 };
 
 module.exports.googleAuth = async (req, res, next) => {
-  console.log("GoogleAuth:", req.body)
+  console.log("GoogleAuth:", req.body);
   try {
-      const user = await User.findOne({email: req.body.email});
-      if (user) {
-          res.cookie("access_token", token, {
-              httpOnly: true
-          }).status(200).json(user._doc)
-      } else {
-          const newUser = new User({
-              ...req.body,
-              // fromGoogle: true,
-          });
-          const savedUser = await newUser.save();
-          res.cookie("access_token", token, {
-              httpOnly: true
-          }).status(200).json(savedUser._doc)
-      }
+    const user = await User.findOne({ email: req.body.email });
+    if (user) {
+      return res.json({
+        status: true,
+        message: "Login Successfull",
+        userId: user._id,
+        token: `Bearer ${generateToken(user._id.toString())}`,
+      });
+    } else {
+      const newUser = new User({
+        ...req.body,
+      });
+      const savedUser = await newUser.save();
+
+      return res.json({
+        status: true,
+        message: "Login Successfull",
+        userId: savedUser._id,
+        token: `Bearer ${generateToken(savedUser._id.toString())}`,
+      });
+    }
   } catch (error) {
-      next(error);
+    next(error);
   }
 };
