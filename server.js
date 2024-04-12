@@ -11,16 +11,16 @@ const UserModal = require("./models/userModel");
 
 require("dotenv").config();
 
-// app.use(
-//   cors({
-//     origin: [
-//       "http://localhost:3000",
-//       "https://fan-gram-admin-panel.vercel.app",
-//       "https://fan-gram.vercel.app",
-//     ],
-//   })
-// );
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://fan-gram-admin-panel.vercel.app",
+      "https://fan-gram.vercel.app",
+    ],
+  })
+);
+
 
 // app.use(express.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
