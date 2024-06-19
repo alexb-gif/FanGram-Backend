@@ -28,7 +28,7 @@ app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
 
 app.get("/", (req, res) => {
-  res.status(200).json("Running");
+  res.status(200).json("Fangram backend running!!!");
 });
 
 app.use(
